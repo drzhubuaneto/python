@@ -1,0 +1,49 @@
+příklad:
+spustí se hra:
+"ocitl/a jsi se v postapokalyptické opuštěné laboratoři při hledání úkrytu..."
+vypíše mi to, co je v místnosti:
+v první místnosti bude zbraň
+"laboratoř klinické biochemie
+ v laboratoři je X nepřátel
+ na zemi leží X
+ vedou odsud dveře do laboratoře mikrobiologie"
+další místnost je mikrobiologie:
+"ALE NE! je tu vyvinutá verze XY!"
+vypíše mi to info:
+"XY je XYZ způsobující XYZ"
+musim porazit nepřítele
+najdu v místnosti nějakou vakcínu/adrenalin idk
+bude tu zase zbraň
+pokračuji dál do místnosti hematologie
+v hemačce bude truhla s klíčem "bude se hodit" nápis or sum
+v místnosti bude mega zbraň
+v místnosti je ofc nepřítel 
+porazim nepřítele
+poslední místnost bude laborka genetiky = nějaká mega nestvůra
+porazim final bosse = použiju klíč a najednou... byl to jen zlý sen omg chill
+
+v YAML souboru bych si měla rozvrhnout místnosti:
+biochemie = zbraň
+mikrobiologie = lepší zbraň, lektvar, truhla s klíčem
+hematologie = mega zbraň, lektvar (brutálnější)
+genetika = mega final boss, 
+
+
+
+
+jak načíst yaml:
+import yaml
+
+def load_rooms(file_path):
+    with open(file_path, "r") as file:
+        data = yaml.safe_load(file)
+    return data["rooms"]
+
+rooms = load_rooms("rooms.yaml")
+
+# Výpis načtených místností
+for room in rooms:
+    print(f"Místnost: {room['name']}")
+    print(f"Popis: {room['description']}")
+    print(f"Východy: {room['exits']}")
+    print()

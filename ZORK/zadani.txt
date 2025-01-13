@@ -1,0 +1,63 @@
+*ZORK 2024 F7PMIOOP by Jedimik inspired by Dvorson*
+
+# Příprava
+
+- Vytvořte si virtuální prostředí, aktivujte jej a nainstalujte balíčky s "pip install -e ."
+- Nastavte si v configuration/constants.py defaultní cestu pro projekt (Použijte Pathlib/os modul, nechci cestu jako string)
+- Ideálně si načtěte ve VSCode přímo adresář se Zork
+- Spouští se přes main.py (můžete si aktuálně vyzkoušet command - "jdi Druha_mistnost")
+
+# Odevzdání a Deadline
+- Odevzdat na váš gitový repozitář v adresáři - *sem*
+- **DEADLINE: 19.1.2025 23:59**
+- **Je nutné splnit všechny hlavní úlohy zadání** - Hodnotí se způsob implementace, funkčnost.
+- Je možné získat **bonusové body** za úlohy označené jako *Bonus*
+
+# Popis hry
+
+- Zork je legendární textová adventura, která tě vtáhne do světa plného tajemství, nebezpečí a pokladů. Zapomeň na grafiku a myši – tvou jedinou zbraní je tvá představivost a klávesnice.
+- V Zorku se stáváš dobrodruhem, který prozkoumává rozsáhlý podzemní svět. Popisuješ své akce pomocí textových příkazů (jdi na sever, otevři truhlici, vezmi meč) a hra na ně reaguje, popisuje tvé okolí a odhaluje další části příběhu.
+
+# Zadání
+- Vymyslete si scénář příběhu. Hráč se objeví v místnosti, může se pohybovat po místnostech, jenž spolu sousedí. Zde může narazit na nepřítele, kterého je nutné porazit. Prokouše se takhle alespoň 3 místnostmi, dokud nenarazí na zamčené dveře/jeskyni, ke kterému bude potřebovat nějaký klíč, jenž bude dropem z nepřítele či nalezen v truhle předposlední místnosti. Následně s klíčem může do poslední zamčené místnosti, kterou tímto odemkne, (ne)porazí hlavního nepřítele - bosse a tím (ne)vyhraje hru. Hráč pak může hrát odznova. 
+
+**Nezasahujte výrazně do existující struktury, tj. nedělejte komplet vlastní template pro hru. Využijte struktury, která je k dispozici.**
+
+1. Přepracujte command_line_ui tak, aby byl singleton
+2. Ošetřete, aby hra nespadla při nsprávném zadání uživatelského vstupu - pokud zadá něco špatně, měl by být o tom informován a měl by mít možnost hrát dále.
+3. Data hry, které se mění, by měly být umístěny tak, aby šlo jednoduše implementovat resetování hry (základ tam je - gamedata)
+4. Příkazy využívají command pattern. Dbejte na to, aby bylo možné udělat reset bez přeinicializování commandů. (základ tam už je)
+5. Implementujte příkaz jdi - který dokáže procházet prostory vždy do východů dané místnosti. 
+6. Implementujte třídu reprezentující hráče.
+    - Hráč má jméno, životy, volitelně také atributy, může mít zbraň (viz další požadavky), inventář (viz další požadavky)
+7. Implementujte třídu reprezentující nepřítele (Enemy), použijte kombinaci Flyweight + Builder patternu na neměnné části nepřítele. Nepřítel generuje vždy nějaké poškození (v rozmezí) a útočí na hráče
+8. Implementujte příkaz seber/pick, který umožní sebrat vybraný předmět z místnosti/loot truhly.
+    - K tomu také příkaz nasaď/equip, jenž umožní nasadit (nastavit jako hlavní) vámi vybranou zbraň. Původní zbraň spadne zpět do inventáře.
+    - Zároveň příkaz polož, jenž umožní položit věc z inventáře na zem místnosti. - Lze ji sebrat později, zůstává po celou dobu na zemi. 
+9. Implementujte příkaz útok/attack, který z rozsahu zbraně + může být škálovaný atributem hráče, udělí poškození nepříteli. (nemusí se psát přímo attack Enemy, stačí attack - bude útočit právě na toho jednoho nepřítele v místnosti)
+    - Pokud nemá hráč nasazenou zbraň, nemůže útočit!
+    - Pokud hráč neporazí nepřítele, nepřítel porazí hráče.
+    - Hráč nemůže do další místnosti ani vykonávat jiné příkazy (mimo help a nasaď/equip), dokud neporazí nepřítele. Nemůže mu posbírat loot, protože je zaneprázdněn útoky od nepřítele. Tudíž jakýkoliv jiný command vyústí v to, že nepřítel uštědří hráči lekci.
+10. Implementujte příkaz restart, který resetuje data hry do původního stavu.
+11. Implementujte příkaz konec/stop, jenž ukončí hru.
+12. Hra končí tím, pokud uživatel porazí speciálního bosse ve speciální místnosti
+    - Speciální místnost se odemyká klíčem, který lze v průběhu hraní někde získat - loot z enemy, nebo z truhly. - Implementujte příkaz pro odemknutí - můžete použít třeba "use" **Jako bonus** - jinak stačí mít klíčovou věc v inventáři.
+    - Po odemknutí speciální místnosti může hráč dovnitř a utkat se s finálním bossem. Nebo finální boss byl v místnosti předešlé a klíč se dá použít pro odejití z poslední místnosti na "svobodu".
+13. Vymyslete i nějaké speciální itemy, např. lektvar pro zvýšení života/nějakého atributu, brnění, štít, více různých zbraní.
+14. Upravte logování tak, aby se všechny příkazy logovaly do logs/info_logger.yaml (je tam už příprava) Logujte čas a příkaz.
+15. Uživatel hraje přes příkazovou řádku, je tedy nežádoucí aby vlastní vývojářské informace se vypisovaly do standardního výstupu. Tzn. V celé aplikaci nebude použit ani jedna funkce "print()" - mimo command_line_ui.
+16. Implementujte Observer pattern na třídu představující inventář (inventář bude Publisher). Pokud se přidá/odebere item z inventáře, registrovaný Listener jen vytiskne aktuální obsah inventáře.
+17. Implementujte příkaz look, jenž vám vrátí obsah místnosti, případné enemy (pokud je poražený, tak samozřejmě dá vědět, že tam není žijící enemy), loot v místnosti atp.
+18. Implementujte příkaz help, jenž vrací seznam všech příkazů a aktuální místnost.
+19. Implementujte třídu pro truhly - truhla po rozbití/otevření drží nějaké itemy, které si hráč může vzít.
+20. Umožněte vytváření místností/enemy/itemů pomocí loadingu z configuračních souborů. Na základě strukturovaného json/yaml souboru se vytvoří roomky, enemy, itemy, hráč. **Implementujte alespoň pro jednu z variant, pro více variant to bude jako bonus s body navíc**
+
+## Sečteno podtrženo :)
+- Implementujte příkazy: go, stop, restart, pick, put, equip, use, attack, look, help
+- Snažte se, ať jsou výpisy smysluplné a ať se dá hrát, nechceme aby uživatel musel stále psát help pro nápovědu
+- Při příchodu do místnosti by bylo fajn vypsat její description a info o tom, jací tam jsou nepřátelé, možné východy, předměty atp.
+- Při souboji je dobré, aby bylo jasné kolik života má hráč i enemy
+
+Složitost hlavího scénáře si představuju tak, že se po startu hry zjevíme v nějaké místnosti, bude tam např. klacek s malým poškozením, půjdu do místnosti, tam bude nepřítel, buďto slabý nebo silný -> podle toho ho buď porazíme nebo ne. Z místnosti slabého nepřítele získám loot pro poražení silnějšího, tomu v místnosti seberu klíč pro místnost s final bossem. Porazím -> konec hry.
+
+Reference: https://www.dosgames.com/game/zork-the-great-underground-empire/ 

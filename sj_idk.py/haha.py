@@ -5,14 +5,12 @@ import seaborn as sns  #knihovna pro vizualizace s porkočilými grafy
 
 #stažení datasetu z kaggle a načtení cesty k souboru
 path = kagglehub.dataset_download("hopesb/student-depression-dataset")
-#print("Path to dataset files:", path)
-#kontrola správného načtení cesty
+#print("path to dataset:", path)
 
 #načtení csv souboru s daty
 csv_file = f"{path}/Student Depression Dataset.csv" 
 data = pd.read_csv(csv_file)
 #print(data.head())
-#kontrola pár řádků, že to načítá soubor s daty
 
 #1) DISTRIBUCE PODLE POHLAVÍ + DEPRESE
 #výpočet počtů a procentuálního zastoupení deprese pro jednotlivá pohlaví v datasetu

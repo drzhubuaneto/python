@@ -1,0 +1,68 @@
+intro_text: |
+  ...Temnota... Ozvěny kapající vody... Škytání přístrojů... Otevíráte oči.
+  Jste v neznámé laboratoři. Nebo snad v nemocnici? Nikde nikdo, jen ticho.
+  Musíte zjistit, co se tu děje... a najít cestu ven.
+
+rooms:
+  - nazev: "Hala"
+    popis: "Stojíte v temné hale s čtyřmi dveřmi: Biochemie, Mikrobiologie, Hematologie a Genetika."
+    locked: false
+
+  - nazev: "Biochemie"
+    popis: "Stoly s laboratorním sklem a chemikáliemi. Díky bohu žádný nepřítel."
+    locked: false
+    items:
+      - typ: "weapon"
+        nazev: "Základní stříkačka"
+        popis: "Zbraň s menším poškozením."
+        damage: 10
+      - typ: "item"
+        nazev: "Čipová karta - Mikrobiologie"
+        popis: "Otevírá dveře do místnosti Mikrobiologie."
+
+  - nazev: "Mikrobiologie"
+    popis: "Vzduch je cítit kultivovanými bakteriemi. Před vámi je Shigella – bakteriální nepřítel."
+    locked: true
+    enemy:
+      jmeno: "Shigella"
+      popis: "Nebezpečná bakteriální infekce."
+      hp: 30
+      attack: 5
+    items:
+      - typ: "weapon"
+        nazev: "Pokročilá injekční puška"
+        popis: "Silnější zbraň pro efektivnější boj."
+        damage: 20
+      - typ: "potion"
+        nazev: "Adrenalin"
+        popis: "Okamžitě obnoví 30 HP."
+        healing: 30
+      - typ: "item"
+        nazev: "Čipová karta - Hematologie"
+        popis: "Otevírá dveře do místnosti Hematologie."
+
+  - nazev: "Hematologie"
+    popis: "Ve zkumavkách krev a mikroskopické nálezy. Virus HIV se vznáší po místnosti."
+    locked: true
+    enemy:
+      jmeno: "HIV"
+      popis: "Virus napadající imunitní buňky."
+      hp: 50
+      attack: 8
+    items:
+      - typ: "item"
+        nazev: "Čipová karta - Genetika"
+        popis: "Otevírá dveře do místnosti Genetika."
+
+  - nazev: "Genetika"
+    popis: "Finální laboratoř - mix agresivních patogenů v jednom těle!"
+    locked: true
+    enemy:
+      jmeno: "Kombinace virů a bakterií"
+      popis: "Finální boss – agresivní mutace!"
+      hp: 80
+      attack: 10
+    items:
+      - typ: "item"
+        nazev: "Klíč od dveří"
+        popis: "Otevírá dveře k úniku!"
